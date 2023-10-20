@@ -11,7 +11,7 @@
 #  - type: ClothingGrantComponent
 #    component:
 #    - type: ShowHealthBars
-#      damageContainers: 
+#      damageContainers:
 #      - Inorganic
   - type: ReverseEngineering # Nyano
     difficulty: 3
@@ -31,13 +31,14 @@
 #  - type: ClothingGrantComponent
 #    component:
 #    - type: ShowHealthBars
-#      damageContainers: 
+#      damageContainers:
 #      - Biological
 #      - HalfSpirit
   - type: ReverseEngineering # Nyano
     difficulty: 3
     recipes:
       - ClothingEyesHudMedical
+  - type: ShowHealthIcons
 
 - type: entity
   parent: ClothingEyesBase

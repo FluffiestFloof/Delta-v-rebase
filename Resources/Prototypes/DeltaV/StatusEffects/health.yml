@@ -1,0 +1,63 @@
+- type: statusIcon
+  id: HealthIconPerfect
+  priority: 5
+  icon:
+    sprite: DeltaV/Interface/Misc/health_icons.rsi
+    state: perfect
+  locationPreference: Left
+
+- type: statusIcon
+  id: HealthIconGood
+  priority: 5
+  icon:
+    sprite: DeltaV/Interface/Misc/health_icons.rsi
+    state: good
+  locationPreference: Left
+
+- type: statusIcon
+  id: HealthIconOkay
+  priority: 5
+  icon:
+    sprite: DeltaV/Interface/Misc/health_icons.rsi
+    state: okay
+  locationPreference: Left
+
+- type: statusIcon
+  id: HealthIconPoor
+  priority: 5
+  icon:
+    sprite: DeltaV/Interface/Misc/health_icons.rsi
+    state: poor
+  locationPreference: Left
+
+- type: statusIcon
+  id: HealthIconBad
+  priority: 5
+  icon:
+    sprite: DeltaV/Interface/Misc/health_icons.rsi
+    state: bad
+  locationPreference: Left
+
+- type: statusIcon
+  id: HealthIconVeryBad
+  priority: 5
+  icon:
+    sprite: DeltaV/Interface/Misc/health_icons.rsi
+    state: verybad
+  locationPreference: Left
+
+- type: statusIcon
+  id: HealthIconCrit
+  priority: 5
+  icon:
+    sprite: DeltaV/Interface/Misc/health_icons.rsi
+    state: crit # I know this is technically dead and revivable in /tg/ but eh
+  locationPreference: Left
+
+- type: statusIcon
+  id: HealthIconDead
+  priority: 5
+  icon:
+    sprite: DeltaV/Interface/Misc/health_icons.rsi
+    state: dead
+  locationPreference: Left

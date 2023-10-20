@@ -1,0 +1,51 @@
+{
+    "version": 1,
+    "license": "CC-BY-SA-3.0",
+    "copyright": "crit and dead taken from tgstation at commit https://github.com/tgstation/tgstation/commit/d917f4c2a088419d5c3aec7656b7ff8cebd1822e",
+    "size": {
+        "x": 8,
+        "y": 8
+    },
+    "states": [
+        {
+            "name": "perfect"
+        },
+        {
+            "name": "good"
+        },
+        {
+            "name": "okay"
+        },
+        {
+            "name": "poor"
+        },
+        {
+            "name": "bad"
+        },
+        {
+            "name": "verybad",
+            "delays": [
+            [
+              0.1,
+              0.1
+            ]
+          ]
+        },
+        {
+            "name": "crit",
+            "delays": [
+            [
+              0.1,
+              0.1,
+              0.1,
+              0.1,
+              0.1,
+              0.1
+            ]
+          ]
+        },
+        {
+            "name": "dead"
+        }
+    ]
+}
