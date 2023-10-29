@@ -23,6 +23,7 @@ using Content.Server.Shuttles.Systems;
 using Content.Shared.Mobs;
 using Robust.Server.Containers;
 using Robust.Shared.Prototypes;
+using Content.Server.Revolutionary.Components; // DeltaV - CommandStaffComponent
 
 namespace Content.Server.Antag;
 
@@ -96,7 +97,7 @@ public sealed class AntagSelectionSystem : GameRuleSystem<GameRuleComponent>
         {
             if (includeHeads == false)
             {
-                if (!_jobs.CanBeAntag(player))
+                if (!_jobs.CanBeAntag(player) || HasComp<CommandStaffComponent>(player.AttachedEntity)) // DeltaV - Check if player has CommandStaff (aka is a head) and prevent them from being an antag
                     continue;
             }
 

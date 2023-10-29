@@ -143,7 +143,7 @@ public sealed class RevolutionaryRuleSystem : GameRuleSystem<RevolutionaryRuleCo
         while (query.MoveNext(out _, out var comp, out _))
         {
             _antagSelection.EligiblePlayers(comp.HeadRevPrototypeId, comp.MaxHeadRevs, comp.PlayersPerHeadRev, comp.HeadRevStartSound,
-                "head-rev-role-greeting", "#5e9cff", out var chosen);
+                "head-rev-role-greeting", "#5e9cff", out var chosen, false); // Delta V - Makes last parameter "includeHeads" = false to avoid Heads being head rev. This only check if they can be antag so this can probably prevent headrev sec
             if (chosen.Any())
                 GiveHeadRev(chosen, comp.HeadRevPrototypeId, comp);
             else
