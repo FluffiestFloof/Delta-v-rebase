@@ -302,7 +302,7 @@
 
 - type: cargoBounty
   id: BountyPancake
-  reward: 750 # DeltaV - Bounty nerf, originally 20000
+  reward: 2000 # DeltaV - Bounty nerf, originally 20000
   description: bounty-description-pancake
   entries:
   - name: bounty-item-pancake
