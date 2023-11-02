@@ -258,7 +258,7 @@
 
 - type: cargoBounty
   id: BountyLime
-  reward: 2500 # DeltaV - Bounty nerf, originally 2000
+  reward: 2500 # DeltaV - Bounty nerf, originally 20000
   description: bounty-description-lime
   entries:
   - name: bounty-item-lime
