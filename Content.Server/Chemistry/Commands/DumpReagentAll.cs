@@ -4,6 +4,8 @@ using Content.Shared.Administration;
 using Content.Shared.Chemistry.Reagent;
 using Robust.Shared.Console;
 using Robust.Shared.Prototypes;
+using System.Linq;
+using Content.Shared.Chemistry.Reaction;
 
 namespace Content.Server.Chemistry.Commands;
 
@@ -13,9 +15,9 @@ public sealed class DumpReagentAll : IConsoleCommand
     [Dependency] private readonly IPrototypeManager _prototype = default!;
     [Dependency] private readonly IEntitySystemManager _entSys = default!;
 
-    public string Command => "dumpreagents";
+    public string Command => "dumpallreagents";
     public string Description => "Dumps the guidebook text for all reagent to the console";
-    public string Help => "dumpreagents";
+    public string Help => "dumpallreagents";
 
     public string Path = "E:/SS14 Codebases/allreagenteffects.txt";
 
@@ -37,12 +39,14 @@ public sealed class DumpReagentAll : IConsoleCommand
         File.WriteAllText(Path, "FILE START\n");
 
         var prototypes = _prototype.EnumeratePrototypes<ReagentPrototype>();
+
         using (StreamWriter sw = File.AppendText(Path))
         {
             foreach (var rea in prototypes)
             {
                 sw.WriteLine("START REAGENT");
-                sw.WriteLine(rea.LocalizedName);
+                sw.WriteLine(Loc.GetString("guidebook-dumpreagent-name",("name", rea.LocalizedName)));
+                sw.WriteLine(rea.SubstanceColor.ToHex());
                 if (rea.Metabolisms is null)
                 {
                     sw.WriteLine("None");
@@ -53,16 +57,44 @@ public sealed class DumpReagentAll : IConsoleCommand
                     {
                         foreach (var effect in entry.Effects)
                         {
-                            sw.WriteLine(effect.GuidebookEffectDescription(_prototype, _entSys) ?? $"[skipped effect of type {effect.GetType()}]");
+                            sw.WriteLine(effect.GuidebookEffectDescription(_prototype, _entSys) ?? $"[skipped effect]");
                         }
                     }
                 }
+                sw.WriteLine("START RECIPE");
+
+                if (!_prototype.TryIndex<ReactionPrototype>(rea.ID, out var reactionPrototype))
+                {
+                    reactionPrototype = _prototype.EnumeratePrototypes<ReactionPrototype>()
+                        .FirstOrDefault(p => p.Products.ContainsKey(rea.ID));
+                }
+                if (reactionPrototype != null)
+                {
+                    var reactantsCount = reactionPrototype.Reactants.Count;
+                    foreach (var (product, reactant) in reactionPrototype.Reactants)
+                    {
+                        sw.WriteLine(Loc.GetString("guidebook-dumpreagent-recipes-reagent", ("reagent", _prototype.Index<ReagentPrototype>(product).LocalizedName), ("ratio", reactant.Amount)));
+                    }
+
+                    if (reactionPrototype.MinimumTemperature > 0.0f)
+                    {
+                        sw.WriteLine(Loc.GetString("guidebook-reagent-recipes-mix-and-heat", ("temperature", reactionPrototype.MinimumTemperature)));
+                    }
+
+                    // var productCount = reactionPrototype.Products.Count;
+                    // foreach (var (product, ratio) in reactionPrototype.Products)
+                    // {
+                    //     sw.WriteLine(Loc.GetString("guidebook-dumpreagent-recipes-product", ("reagent", _prototype.Index<ReagentPrototype>(product).LocalizedName), ("ratio", ratio)));
+                    // }
+                }
+                else
+                {
+                    sw.WriteLine("None");
+                }
+
                 sw.WriteLine("END REAGENT");
             }
         }
-        using (StreamWriter sw = File.AppendText(Path))
-        {
-            sw.WriteLine("FILE END");
-        }
+        File.AppendAllText(Path, "END FILE");
     }
 }
