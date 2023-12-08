@@ -19,7 +19,7 @@ public sealed class DumpReagentAll : IConsoleCommand
     public string Description => "Dumps the guidebook text for all reagent to the console";
     public string Help => "dumpallreagents";
 
-    public string Path = "E:/SS14 Codebases/allreagenteffects.txt";
+    public string Path = "E:/SS14 Codebases/gameinfodump.txt";
 
     public void Execute(IConsoleShell shell, string argStr, string[] args)
     {
@@ -45,8 +45,9 @@ public sealed class DumpReagentAll : IConsoleCommand
             foreach (var rea in prototypes)
             {
                 sw.WriteLine("START REAGENT");
-                sw.WriteLine(Loc.GetString("guidebook-dumpreagent-name",("name", rea.LocalizedName)));
+                sw.WriteLine(Loc.GetString("guidebook-dumpreagent-name", ("name", rea.LocalizedName)));
                 sw.WriteLine(rea.SubstanceColor.ToHex());
+                sw.WriteLine("{0}: {1}", "GROUP", rea.Group ?? $"Other");
                 if (rea.Metabolisms is null)
                 {
                     sw.WriteLine("None");
@@ -73,7 +74,14 @@ public sealed class DumpReagentAll : IConsoleCommand
                     var reactantsCount = reactionPrototype.Reactants.Count;
                     foreach (var (product, reactant) in reactionPrototype.Reactants)
                     {
-                        sw.WriteLine(Loc.GetString("guidebook-dumpreagent-recipes-reagent", ("reagent", _prototype.Index<ReagentPrototype>(product).LocalizedName), ("ratio", reactant.Amount)));
+                        if (reactant.Catalyst)
+                        {
+                            sw.WriteLine(Loc.GetString("guidebook-dumpreagent-recipes-reagent-catalyst", ("reagent", _prototype.Index<ReagentPrototype>(product).LocalizedName), ("ratio", reactant.Amount)));
+                        }
+                        else
+                        {
+                            sw.WriteLine(Loc.GetString("guidebook-dumpreagent-recipes-reagent", ("reagent", _prototype.Index<ReagentPrototype>(product).LocalizedName), ("ratio", reactant.Amount)));
+                        }
                     }
 
                     if (reactionPrototype.MinimumTemperature > 0.0f)
