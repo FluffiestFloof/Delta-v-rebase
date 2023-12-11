@@ -45,9 +45,10 @@ public sealed class DumpReagentAll : IConsoleCommand
             foreach (var rea in prototypes)
             {
                 sw.WriteLine("START REAGENT");
-                sw.WriteLine(Loc.GetString("guidebook-dumpreagent-name", ("name", rea.LocalizedName)));
+                sw.WriteLine(Loc.GetString("wikidump-reagent-name", ("name", rea.LocalizedName)));
                 sw.WriteLine(rea.SubstanceColor.ToHex());
                 sw.WriteLine("{0}: {1}", "GROUP", rea.Group ?? $"Other");
+                sw.WriteLine("{0}: {1}", "METABOLISMRATE", rea.MetabolismRate ?? $"Other");
                 if (rea.Metabolisms is null)
                 {
                     sw.WriteLine("None");
@@ -76,23 +77,23 @@ public sealed class DumpReagentAll : IConsoleCommand
                     {
                         if (reactant.Catalyst)
                         {
-                            sw.WriteLine(Loc.GetString("guidebook-dumpreagent-recipes-reagent-catalyst", ("reagent", _prototype.Index<ReagentPrototype>(product).LocalizedName), ("ratio", reactant.Amount)));
+                            sw.WriteLine(Loc.GetString("wikidump-reagent-recipes-reagent-catalyst", ("reagent", _prototype.Index<ReagentPrototype>(product).LocalizedName), ("ratio", reactant.Amount)));
                         }
                         else
                         {
-                            sw.WriteLine(Loc.GetString("guidebook-dumpreagent-recipes-reagent", ("reagent", _prototype.Index<ReagentPrototype>(product).LocalizedName), ("ratio", reactant.Amount)));
+                            sw.WriteLine(Loc.GetString("wikidump-reagent-recipes-reagent", ("reagent", _prototype.Index<ReagentPrototype>(product).LocalizedName), ("ratio", reactant.Amount)));
                         }
                     }
 
                     if (reactionPrototype.MinimumTemperature > 0.0f)
                     {
-                        sw.WriteLine(Loc.GetString("guidebook-reagent-recipes-mix-and-heat", ("temperature", reactionPrototype.MinimumTemperature)));
+                        sw.WriteLine(Loc.GetString("wikidump-reagent-recipes-mix-and-heat", ("temperature", reactionPrototype.MinimumTemperature)));
                     }
 
                     // var productCount = reactionPrototype.Products.Count;
                     // foreach (var (product, ratio) in reactionPrototype.Products)
                     // {
-                    //     sw.WriteLine(Loc.GetString("guidebook-dumpreagent-recipes-product", ("reagent", _prototype.Index<ReagentPrototype>(product).LocalizedName), ("ratio", ratio)));
+                    //     sw.WriteLine(Loc.GetString("wikidump-reagent-recipes-product", ("reagent", _prototype.Index<ReagentPrototype>(product).LocalizedName), ("ratio", ratio)));
                     // }
                 }
                 else
