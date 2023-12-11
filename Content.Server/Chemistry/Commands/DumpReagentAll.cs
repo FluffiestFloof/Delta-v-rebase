@@ -48,7 +48,6 @@ public sealed class DumpReagentAll : IConsoleCommand
                 sw.WriteLine(Loc.GetString("wikidump-reagent-name", ("name", rea.LocalizedName)));
                 sw.WriteLine(rea.SubstanceColor.ToHex());
                 sw.WriteLine("{0}: {1}", "GROUP", rea.Group ?? $"Other");
-                sw.WriteLine("{0}: {1}", "METABOLISMRATE", rea.MetabolismRate ?? $"Other");
                 if (rea.Metabolisms is null)
                 {
                     sw.WriteLine("None");
@@ -57,6 +56,7 @@ public sealed class DumpReagentAll : IConsoleCommand
                 {
                     foreach (var (_, entry) in rea.Metabolisms)
                     {
+                        sw.WriteLine(Loc.GetString("wikidump-reagent-effects-metabolism-rate", ("rate", entry.MetabolismRate)));
                         foreach (var effect in entry.Effects)
                         {
                             sw.WriteLine(effect.GuidebookEffectDescription(_prototype, _entSys) ?? $"[skipped effect]");

@@ -4,7 +4,7 @@ wikidump-reagent-recipes-reagent-catalyst = {$ratio} part {CAPITALIZE($reagent)}
 wikidump-reagent-recipes-product = {$ratio} part {CAPITALIZE($reagent)}
 wikidump-reagent-recipes-mix = Mix
 wikidump-reagent-recipes-mix-and-heat = Mix at above {$temperature}K
-wikidump-reagent-effects-metabolism-rate = {$rate} u/s
+wikidump-reagent-effects-metabolism-rate = METABOLISMRATE: {$rate}
 wikidump-reagent-effects-metabolism-group = {$group}
 
 # Missing reagent effects
