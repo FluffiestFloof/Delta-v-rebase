@@ -1,6 +1,6 @@
 wikidump-reagent-name = {CAPITALIZE($name)}
 wikidump-reagent-recipes-reagent = {$ratio} part {CAPITALIZE($reagent)}
-wikidump-reagent-recipes-reagent-catalyst = {$ratio} part {CAPITALIZE($reagent)} (catalyst)
+wikidump-reagent-recipes-reagent-catalyst = {$ratio} part {CAPITALIZE($reagent)}<sup>(catalyst)</sup>
 wikidump-reagent-recipes-product = {$ratio} part {CAPITALIZE($reagent)}
 wikidump-reagent-recipes-mix = Mix
 wikidump-reagent-recipes-mix-and-heat = Mix at above {$temperature}K
