@@ -6,6 +6,7 @@ using Robust.Shared.Console;
 using Robust.Shared.Prototypes;
 using System.Linq;
 using Content.Shared.Chemistry.Reaction;
+using Content.Shared.Localizations;
 
 namespace Content.Server.Chemistry.Commands;
 
@@ -44,7 +45,9 @@ public sealed class DumpReagentAll : IConsoleCommand
         {
             foreach (var rea in prototypes)
             {
+                // Start the reagent info
                 sw.WriteLine("START REAGENT");
+                // Write the reagent's name, color, group and metabolism rate
                 sw.WriteLine(Loc.GetString("wikidump-reagent-name", ("name", rea.LocalizedName)));
                 sw.WriteLine(rea.SubstanceColor.ToHex());
                 sw.WriteLine("{0}: {1}", "GROUP", rea.Group ?? $"Other");
@@ -63,7 +66,28 @@ public sealed class DumpReagentAll : IConsoleCommand
                         }
                     }
                 }
+                // Start the recipe
                 sw.WriteLine("START RECIPE");
+
+                // var reactions = _prototype.EnumeratePrototypes<ReactionPrototype>()
+                // .Where(p => p.Products.ContainsKey(reagent.ID))
+                // .OrderBy(p => p.Priority)
+                // .ThenBy(p => p.Products.Count)
+                // .ToList();
+
+                // if (reactions.Any())
+                // {
+                //     foreach (var reactionPrototype in reactions)
+                //     {
+                //         var ctrl = GetRecipeGuide(reactionPrototype);
+                //         RecipesDescriptionContainer.AddChild(ctrl);
+                //     }
+                // }
+                // else
+                // {
+                //     RecipesContainer.Visible = false;
+                // }
+
 
                 if (!_prototype.TryIndex<ReactionPrototype>(rea.ID, out var reactionPrototype))
                 {
@@ -72,6 +96,29 @@ public sealed class DumpReagentAll : IConsoleCommand
                 }
                 if (reactionPrototype != null)
                 {
+                    // Get the mixing categories
+                    var mixingCategories = new List<MixingCategoryPrototype>();
+                    if (reactionPrototype.MixingCategories != null)
+                    {
+                        foreach (var category in reactionPrototype.MixingCategories)
+                        {
+                            mixingCategories.Add(_prototype.Index(category));
+                        }
+                    }
+
+                    var mixingVerb = mixingCategories.Count == 0
+                        ? Loc.GetString("wikidump-reagent-recipes-mix")
+                        : ContentLocalizationManager.FormatList(mixingCategories.Select(p => Loc.GetString(p.VerbText)).ToList());
+
+                    var text = Loc.GetString("wikidump-reagent-recipes-mix-info",
+                        ("verb", mixingVerb),
+                        ("minTemp", reactionPrototype.MinimumTemperature),
+                        ("maxTemp", reactionPrototype.MaximumTemperature),
+                        ("hasMax", !float.IsPositiveInfinity(reactionPrototype.MaximumTemperature)));
+
+                    sw.WriteLine(text);
+
+                    // Get all the reagents of the recipe
                     var reactantsCount = reactionPrototype.Reactants.Count;
                     foreach (var (product, reactant) in reactionPrototype.Reactants)
                     {
@@ -83,11 +130,6 @@ public sealed class DumpReagentAll : IConsoleCommand
                         {
                             sw.WriteLine(Loc.GetString("wikidump-reagent-recipes-reagent", ("reagent", _prototype.Index<ReagentPrototype>(product).LocalizedName), ("ratio", reactant.Amount)));
                         }
-                    }
-
-                    if (reactionPrototype.MinimumTemperature > 0.0f)
-                    {
-                        sw.WriteLine(Loc.GetString("wikidump-reagent-recipes-mix-and-heat", ("temperature", reactionPrototype.MinimumTemperature)));
                     }
 
                     // var productCount = reactionPrototype.Products.Count;
