@@ -69,74 +69,58 @@ public sealed class DumpReagentAll : IConsoleCommand
                 // Start the recipe
                 sw.WriteLine("START RECIPE");
 
-                // var reactions = _prototype.EnumeratePrototypes<ReactionPrototype>()
-                // .Where(p => p.Products.ContainsKey(reagent.ID))
-                // .OrderBy(p => p.Priority)
-                // .ThenBy(p => p.Products.Count)
-                // .ToList();
+                var reactions = _prototype.EnumeratePrototypes<ReactionPrototype>()
+                .Where(p => p.Products.ContainsKey(rea.ID))
+                .OrderBy(p => p.Priority)
+                .ThenBy(p => p.Products.Count)
+                .ToList();
 
-                // if (reactions.Any())
-                // {
-                //     foreach (var reactionPrototype in reactions)
-                //     {
-                //         var ctrl = GetRecipeGuide(reactionPrototype);
-                //         RecipesDescriptionContainer.AddChild(ctrl);
-                //     }
-                // }
-                // else
-                // {
-                //     RecipesContainer.Visible = false;
-                // }
-
-
-                if (!_prototype.TryIndex<ReactionPrototype>(rea.ID, out var reactionPrototype))
+                if (reactions.Any())
                 {
-                    reactionPrototype = _prototype.EnumeratePrototypes<ReactionPrototype>()
-                        .FirstOrDefault(p => p.Products.ContainsKey(rea.ID));
-                }
-                if (reactionPrototype != null)
-                {
-                    // Get the mixing categories
-                    var mixingCategories = new List<MixingCategoryPrototype>();
-                    if (reactionPrototype.MixingCategories != null)
+                    foreach (var reactionPrototype in reactions)
                     {
-                        foreach (var category in reactionPrototype.MixingCategories)
+                        // Get the mixing categories
+                        var mixingCategories = new List<MixingCategoryPrototype>();
+                        if (reactionPrototype.MixingCategories != null)
                         {
-                            mixingCategories.Add(_prototype.Index(category));
+                            foreach (var category in reactionPrototype.MixingCategories)
+                            {
+                                mixingCategories.Add(_prototype.Index(category));
+                            }
                         }
+
+                        var mixingVerb = mixingCategories.Count == 0
+                            ? Loc.GetString("wikidump-reagent-recipes-mix")
+                            : ContentLocalizationManager.FormatList(mixingCategories.Select(p => Loc.GetString(p.VerbText)).ToList());
+
+                        var text = Loc.GetString("wikidump-reagent-recipes-mix-info",
+                            ("verb", mixingVerb),
+                            ("minTemp", reactionPrototype.MinimumTemperature),
+                            ("maxTemp", reactionPrototype.MaximumTemperature),
+                            ("hasMax", !float.IsPositiveInfinity(reactionPrototype.MaximumTemperature)));
+
+                        sw.WriteLine(text);
+
+                        // Get all the reagents of the recipe
+                        var reactantsCount = reactionPrototype.Reactants.Count;
+                        foreach (var (product, reactant) in reactionPrototype.Reactants)
+                        {
+                            if (reactant.Catalyst)
+                            {
+                                sw.WriteLine(Loc.GetString("wikidump-reagent-recipes-reagent-catalyst", ("reagent", _prototype.Index<ReagentPrototype>(product).LocalizedName), ("ratio", reactant.Amount)));
+                            }
+                            else
+                            {
+                                sw.WriteLine(Loc.GetString("wikidump-reagent-recipes-reagent", ("reagent", _prototype.Index<ReagentPrototype>(product).LocalizedName), ("ratio", reactant.Amount)));
+                            }
+                        }
+
+                        // var productCount = reactionPrototype.Products.Count;
+                        // foreach (var (product, ratio) in reactionPrototype.Products)
+                        // {
+                        //     sw.WriteLine(Loc.GetString("wikidump-reagent-recipes-product", ("reagent", _prototype.Index<ReagentPrototype>(product).LocalizedName), ("ratio", ratio)));
+                        // }
                     }
-
-                    var mixingVerb = mixingCategories.Count == 0
-                        ? Loc.GetString("wikidump-reagent-recipes-mix")
-                        : ContentLocalizationManager.FormatList(mixingCategories.Select(p => Loc.GetString(p.VerbText)).ToList());
-
-                    var text = Loc.GetString("wikidump-reagent-recipes-mix-info",
-                        ("verb", mixingVerb),
-                        ("minTemp", reactionPrototype.MinimumTemperature),
-                        ("maxTemp", reactionPrototype.MaximumTemperature),
-                        ("hasMax", !float.IsPositiveInfinity(reactionPrototype.MaximumTemperature)));
-
-                    sw.WriteLine(text);
-
-                    // Get all the reagents of the recipe
-                    var reactantsCount = reactionPrototype.Reactants.Count;
-                    foreach (var (product, reactant) in reactionPrototype.Reactants)
-                    {
-                        if (reactant.Catalyst)
-                        {
-                            sw.WriteLine(Loc.GetString("wikidump-reagent-recipes-reagent-catalyst", ("reagent", _prototype.Index<ReagentPrototype>(product).LocalizedName), ("ratio", reactant.Amount)));
-                        }
-                        else
-                        {
-                            sw.WriteLine(Loc.GetString("wikidump-reagent-recipes-reagent", ("reagent", _prototype.Index<ReagentPrototype>(product).LocalizedName), ("ratio", reactant.Amount)));
-                        }
-                    }
-
-                    // var productCount = reactionPrototype.Products.Count;
-                    // foreach (var (product, ratio) in reactionPrototype.Products)
-                    // {
-                    //     sw.WriteLine(Loc.GetString("wikidump-reagent-recipes-product", ("reagent", _prototype.Index<ReagentPrototype>(product).LocalizedName), ("ratio", ratio)));
-                    // }
                 }
                 else
                 {
