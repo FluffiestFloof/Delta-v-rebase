@@ -6,6 +6,13 @@
     - type: UltraVision
 
 - type: trait
+  id: MonochromaticVision
+  name: trait-monochromacy-name
+  description: trait-monochromacy-desc
+  components:
+    - type: MonochromaticVision
+
+- type: trait
   id: DefaultVision
   name: Normal Vision
   description: trait-defaultvision-desc

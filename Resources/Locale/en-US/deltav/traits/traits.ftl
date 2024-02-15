@@ -3,6 +3,9 @@ trait-scottish-accent-desc = Fer tha folk who come frae Hielan clan.
 trait-ultravision-desc = Whether through custom bionic eyes, random mutation,
                          or being a Harpy, you perceive the world with ultraviolet light.
 
+trait-monochromacy-name = Monochromacy
+trait-monochromacy-desc = You perceive the world in different shades of grey ranging from black to white.
+
 trait-defaultvision-desc = You lack any vision variation from the norm for a non-human species.
 
 trait-uncloneable-name = Uncloneable

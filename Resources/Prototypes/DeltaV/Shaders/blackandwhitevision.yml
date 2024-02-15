@@ -1,0 +1,4 @@
+- type: shader
+  id: MonochromaticVision
+  kind: source
+  path: "/Textures/Shaders/greyscale.swsl"
