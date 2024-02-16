@@ -66,6 +66,7 @@
   - type: Tag
     tags:
     - VimPilot
+  - type: DogVision
 
 - type: entity
   name: security dog
@@ -176,3 +177,4 @@
     tags:
     - DoorBumpOpener
     - VimPilot
+  - type: DogVision

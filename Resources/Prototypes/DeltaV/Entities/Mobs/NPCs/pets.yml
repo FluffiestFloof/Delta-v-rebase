@@ -18,6 +18,7 @@
     tags:
     - CannotSuicide
     - VimPilot
+  - type: DogVision
 
 - type: entity
   name: Laika
