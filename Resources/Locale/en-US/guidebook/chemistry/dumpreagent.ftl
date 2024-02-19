@@ -22,5 +22,3 @@ reagent-effect-status-effect-PsionicsDisabled = inability to use psionic powers
 reagent-effect-status-effect-SlurredSpeech = slurred speech
 
 # Missing reagent names
-reagent-name-nausium = nausium
-reagent-name-prometheum = prometheum
